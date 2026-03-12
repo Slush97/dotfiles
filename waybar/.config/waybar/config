@@ -89,21 +89,21 @@
 
   "custom/cpu": {
     "interval": 5,
-    "exec": "/home/esoc/.config/waybar/scripts/hw-monitor.sh cpu",
+    "exec": "~/.config/waybar/scripts/hw-monitor.sh cpu",
     "return-type": "json",
     "format": "{}"
   },
 
   "custom/mem": {
     "interval": 10,
-    "exec": "/home/esoc/.config/waybar/scripts/hw-monitor.sh mem",
+    "exec": "~/.config/waybar/scripts/hw-monitor.sh mem",
     "return-type": "json",
     "format": "{}"
   },
 
   "custom/gpu": {
     "interval": 5,
-    "exec": "/home/esoc/.config/waybar/scripts/hw-monitor.sh gpu",
+    "exec": "~/.config/waybar/scripts/hw-monitor.sh gpu",
     "return-type": "json",
     "format": "{}"
   },

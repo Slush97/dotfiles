@@ -22,7 +22,7 @@ case "$choice" in
     "Restart daemon")
         pkill -x scry-dictate && sleep 0.5
         notify-send -a scry-dictate "Restarting" "scry-dictate daemon restarting..."
-        env LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/latest/lib/intel64 scry-dictate --model /home/esoc/esolearn/crates/scry-stt/models/whisper-tiny &
+        env LD_LIBRARY_PATH=/opt/intel/oneapi/mkl/latest/lib/intel64 scry-dictate --model "$HOME/esolearn/crates/scry-stt/models/whisper-tiny" &
         disown
         ;;
 esac
