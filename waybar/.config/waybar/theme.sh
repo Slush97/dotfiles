@@ -3,7 +3,7 @@
 # Usage: ./theme.sh dark | ./theme.sh light | ./theme.sh toggle
 
 STATE_FILE="${XDG_STATE_HOME:-$HOME/.local/state}/brutalist-theme"
-WAYBAR_DIR="$(dirname "$(realpath "$0")")"
+WAYBAR_DIR="$HOME/.config/waybar"
 HYPR_DIR="$HOME/.config/hypr"
 KITTY_DIR="$HOME/.config/kitty"
 FASTFETCH_DIR="$HOME/.config/fastfetch"
