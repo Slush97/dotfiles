@@ -1,0 +1,35 @@
+# Chalk-pastel prompt — dark variant (light pastels on dark bg)
+add_newline = false
+
+format = "$username$directory$python$git_branch$git_status$character"
+
+[username]
+show_always = true
+style_user = "bold #9297BB"
+style_root = "bold #BB9292"
+format = "[$user]($style) "
+
+[directory]
+style = "bold #80AE9E"
+format = "[$path]($style) "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+style = "#9E80AE"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "#BBA180"
+format = "[$all_status$ahead_behind]($style) "
+
+[python]
+format = "[(\\($virtualenv\\))]($style) "
+style = "#AAAE80"
+detect_extensions = []
+detect_files = []
+detect_folders = []
+
+[character]
+success_symbol = "[›](bold #AE8893)"
+error_symbol = "[›](bold #BB9292)"

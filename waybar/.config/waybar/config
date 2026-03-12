@@ -1,0 +1,133 @@
+{
+  "reload_style_on_change": true,
+  "layer": "top",
+  "position": "top",
+  "mode": "dock",
+  "exclusive": true,
+  "passthrough": false,
+  "height": 32,
+  "spacing": 4,
+  "fixed-center": true,
+  "margin-top": 10,
+  "margin-left": 14,
+  "margin-right": 14,
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["group/hardware", "custom/dictate", "custom/dunst", "idle_inhibitor", "custom/bluelight", "backlight", "pulseaudio", "battery", "tray"],
+
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "on-scroll-up": "hyprctl dispatch workspace e+1",
+    "on-scroll-down": "hyprctl dispatch workspace e-1",
+    "sort-by-number": true
+  },
+
+  "clock": {
+    "format": "{:%a %b %d %H:%M}",
+    "tooltip-format": "{:%A, %B %d, %Y}\n%Z"
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    },
+    "tooltip-format": "Idle inhibitor: {status}"
+  },
+
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{icon} {percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "on-scroll-up": "brightnessctl set 5%+",
+    "on-scroll-down": "brightnessctl set 5%-"
+  },
+
+  "pulseaudio": {
+    "format": "  {volume}%",
+    "format-muted": "  muted",
+    "scroll-step": 5,
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+  },
+
+  "battery": {
+    "format": "{icon}  {capacity}%",
+    "format-charging": "  {capacity}%",
+    "format-plugged": "  {capacity}%",
+    "format-icons": ["", "", "", "", ""],
+    "states": {
+      "warning": 30,
+      "critical": 15
+    }
+  },
+
+  "custom/dictate": {
+    "exec": "cat ~/.cache/scry-dictate-waybar.json 2>/dev/null",
+    "return-type": "json",
+    "interval": "once",
+    "signal": 8,
+    "format": "{}",
+    "on-click": "~/.config/waybar/scripts/scry-stats.sh"
+  },
+
+  "group/hardware": {
+    "orientation": "horizontal",
+    "drawer": {
+      "transition-duration": 300,
+      "transition-left-to-right": false
+    },
+    "modules": ["custom/hw-toggle", "custom/cpu", "custom/mem", "custom/gpu"]
+  },
+
+  "custom/hw-toggle": {
+    "format": "󰄪",
+    "tooltip-format": "Toggle hardware stats"
+  },
+
+  "custom/cpu": {
+    "interval": 5,
+    "exec": "/home/esoc/.config/waybar/scripts/hw-monitor.sh cpu",
+    "return-type": "json",
+    "format": "{}"
+  },
+
+  "custom/mem": {
+    "interval": 10,
+    "exec": "/home/esoc/.config/waybar/scripts/hw-monitor.sh mem",
+    "return-type": "json",
+    "format": "{}"
+  },
+
+  "custom/gpu": {
+    "interval": 5,
+    "exec": "/home/esoc/.config/waybar/scripts/hw-monitor.sh gpu",
+    "return-type": "json",
+    "format": "{}"
+  },
+
+  "custom/dunst": {
+    "exec": "dunstctl is-paused | grep -q true && echo '{\"text\": \"󰂛\", \"tooltip\": \"Notifications muted\", \"class\": \"muted\"}' || echo '{\"text\": \"󰂚\", \"tooltip\": \"Notifications active\", \"class\": \"active\"}'",
+    "return-type": "json",
+    "interval": 2,
+    "on-click": "dunstctl set-paused toggle"
+  },
+
+  "custom/bluelight": {
+    "exec": "~/.config/waybar/scripts/bluelight.sh",
+    "return-type": "json",
+    "interval": "once",
+    "signal": 9,
+    "format": "{}",
+    "on-click": "~/.config/waybar/scripts/bluelight.sh toggle && pkill -RTMIN+9 waybar",
+    "on-scroll-up": "~/.config/waybar/scripts/bluelight.sh up && pkill -RTMIN+9 waybar",
+    "on-scroll-down": "~/.config/waybar/scripts/bluelight.sh down && pkill -RTMIN+9 waybar"
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  }
+}

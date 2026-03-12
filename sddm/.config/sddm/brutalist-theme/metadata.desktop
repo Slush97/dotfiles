@@ -1,0 +1,11 @@
+[SddmGreeterTheme]
+Name=Brutalist
+Description=Minimal warm brutalist login theme
+Author=esoc
+License=MIT
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=brutalist
+Theme-API=2.0

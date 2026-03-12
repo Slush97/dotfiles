@@ -1,0 +1,6 @@
+# Plugin manager state (regenerated)
+nvim/.config/nvim/lazy-lock.json
+
+# Backups
+*.bak
+**/backups/

@@ -1,0 +1,201 @@
+@import url("colors.css");
+
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  min-height: 0;
+}
+
+window#waybar {
+  background: transparent;
+  color: @fg;
+  padding: 0;
+}
+
+box.modules-left,
+box.modules-center,
+box.modules-right {
+  background: alpha(@bg, 0.92);
+  border-radius: 0;
+  padding: 4px 10px;
+  margin: 4px 0;
+  border-top: 2px solid alpha(@accent, 0.5);
+}
+
+box.modules-center {
+  background: alpha(@bg, 0.85);
+  padding: 4px 16px;
+}
+
+box.modules-right {
+  padding: 4px 12px;
+}
+
+#workspaces {
+  background: transparent;
+  padding: 0;
+}
+
+#workspaces button {
+  color: @muted;
+  background: transparent;
+  border-radius: 0;
+  padding: 2px 6px;
+  margin: 0 1px;
+  transition: all 100ms ease;
+  border-top: 2px solid transparent;
+}
+
+#workspaces button.active {
+  background: alpha(@accent, 0.15);
+  color: @accent;
+  border-top: 2px solid @accent;
+}
+
+#workspaces button:hover {
+  background: alpha(@fg, 0.08);
+  color: @fg;
+}
+
+#workspaces button.active:hover {
+  background: alpha(@accent, 0.15);
+  color: @accent;
+}
+
+#clock,
+#custom-hw-toggle,
+#custom-cpu,
+#custom-mem,
+#custom-gpu,
+#idle_inhibitor,
+#backlight,
+#pulseaudio,
+#battery,
+#custom-dictate,
+#tray {
+  background: transparent;
+  color: @fg;
+  padding: 2px 8px;
+}
+
+#custom-hw-toggle {
+  color: @muted;
+  padding: 2px 4px 2px 8px;
+}
+
+#custom-cpu.normal,
+#custom-mem.normal,
+#custom-gpu.normal {
+  color: @fg;
+}
+
+#custom-cpu.warm,
+#custom-mem.warm,
+#custom-gpu.warm {
+  color: @accent;
+}
+
+#custom-cpu.hot,
+#custom-mem.hot,
+#custom-gpu.hot {
+  color: @warning;
+}
+
+#custom-cpu.critical,
+#custom-mem.critical,
+#custom-gpu.critical {
+  color: @critical;
+}
+
+#clock {
+  color: @accent;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+#idle_inhibitor {
+  color: @muted;
+}
+
+#idle_inhibitor.activated {
+  color: @accent;
+}
+
+#workspaces .taskbar-window {
+  background: alpha(@bg-surface, 0.5);
+  border-radius: 0;
+  padding: 2px 8px;
+  margin: 0 2px;
+  transition: all 100ms ease;
+  border-top: 2px solid transparent;
+}
+
+#workspaces .taskbar-window.active {
+  background: alpha(@accent, 0.12);
+  border-top: 2px solid alpha(@accent, 0.6);
+}
+
+#workspaces .taskbar-window:hover {
+  background: alpha(@fg, 0.08);
+}
+
+#pulseaudio.muted {
+  color: @warning;
+}
+
+#battery.warning {
+  color: @warning;
+}
+
+#battery.critical {
+  color: @critical;
+}
+
+#custom-dictate.recording {
+  color: @critical;
+}
+
+#custom-dictate.transcribing {
+  color: @warning;
+}
+
+#custom-bluelight {
+  padding: 2px 8px;
+  color: @muted;
+}
+
+#custom-bluelight.warm {
+  color: @accent;
+}
+
+#custom-bluelight.hot {
+  color: @warning;
+}
+
+#custom-bluelight.cool {
+  color: @fg;
+}
+
+#custom-dunst {
+  padding: 2px 8px;
+  color: @muted;
+}
+
+#custom-dunst.muted {
+  color: @critical;
+}
+
+#tray {
+  padding: 4px 8px;
+}
+
+tooltip {
+  background: alpha(@bg, 0.96);
+  color: @fg;
+  border-radius: 0;
+  padding: 8px 10px;
+  border-top: 2px solid alpha(@accent, 0.4);
+}

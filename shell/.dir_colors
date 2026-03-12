@@ -1,0 +1,120 @@
+# Chalk-pastel dircolors — matches esocidae/Starship palette
+# Uses 256-color (38;5;N) and truecolor (38;2;R;G;B) escapes
+
+TERM xterm*
+TERM screen*
+TERM tmux*
+TERM alacritty
+TERM foot
+TERM kitty
+TERM rxvt*
+TERM linux
+
+# === Core types ===
+NORMAL                00
+FILE                  00
+RESET                 0
+
+# Directories — soft teal (matching Starship directory #80AE9E)
+DIR                   01;38;2;128;174;158
+
+# Symlinks — lavender (matching git_branch #9E80AE)
+LINK                  38;2;158;128;174
+ORPHAN                01;38;2;187;146;146
+MISSING               00;38;2;187;146;146
+
+# Executables — warm rose (matching character #AE8893)
+EXEC                  01;38;2;174;136;147
+
+# Special files
+FIFO                  38;2;170;174;128
+SOCK                  38;2;170;174;128
+BLK                   38;2;187;161;128
+CHR                   38;2;187;161;128
+DOOR                  38;2;170;174;128
+
+# Setuid/setgid/sticky
+SETUID                01;04;38;2;187;146;146
+SETGID                01;04;38;2;187;161;128
+STICKY                01;38;2;128;174;158
+STICKY_OTHER_WRITABLE 01;38;2;128;174;158
+OTHER_WRITABLE        38;2;128;174;158
+
+# === Archives — muted gold (matching git_status #BBA180) ===
+.tar   38;2;187;161;128
+.tgz   38;2;187;161;128
+.gz    38;2;187;161;128
+.bz2   38;2;187;161;128
+.xz    38;2;187;161;128
+.zst   38;2;187;161;128
+.zip   38;2;187;161;128
+.7z    38;2;187;161;128
+.rar   38;2;187;161;128
+.deb   38;2;187;161;128
+.rpm   38;2;187;161;128
+.pkg   38;2;187;161;128
+
+# === Images — soft pink (#AE8893) ===
+.png   38;2;174;136;147
+.jpg   38;2;174;136;147
+.jpeg  38;2;174;136;147
+.gif   38;2;174;136;147
+.bmp   38;2;174;136;147
+.svg   38;2;174;136;147
+.webp  38;2;174;136;147
+.ico   38;2;174;136;147
+
+# === Video — dusty lavender (#9E80AE) ===
+.mp4   38;2;158;128;174
+.mkv   38;2;158;128;174
+.avi   38;2;158;128;174
+.mov   38;2;158;128;174
+.webm  38;2;158;128;174
+.flv   38;2;158;128;174
+
+# === Audio — olive green (#AAAE80) ===
+.mp3   38;2;170;174;128
+.flac  38;2;170;174;128
+.ogg   38;2;170;174;128
+.wav   38;2;170;174;128
+.m4a   38;2;170;174;128
+.opus  38;2;170;174;128
+
+# === Documents — cool blue-grey (#9297BB) ===
+.pdf   38;2;146;151;187
+.djvu  38;2;146;151;187
+.doc   38;2;146;151;187
+.docx  38;2;146;151;187
+.odt   38;2;146;151;187
+.epub  38;2;146;151;187
+.txt   38;2;146;151;187
+.md    38;2;146;151;187
+.rst   38;2;146;151;187
+.csv   38;2;146;151;187
+
+# === Source code — soft teal (#80AE9E) ===
+.py    38;2;128;174;158
+.rs    38;2;128;174;158
+.go    38;2;128;174;158
+.js    38;2;128;174;158
+.ts    38;2;128;174;158
+.c     38;2;128;174;158
+.cpp   38;2;128;174;158
+.h     38;2;128;174;158
+.java  38;2;128;174;158
+.rb    38;2;128;174;158
+.sh    38;2;128;174;158
+.lua   38;2;128;174;158
+.html  38;2;128;174;158
+.css   38;2;128;174;158
+.toml  38;2;128;174;158
+.yaml  38;2;128;174;158
+.yml   38;2;128;174;158
+.json  38;2;128;174;158
+.xml   38;2;128;174;158
+
+# === Config/dotfiles — muted blue-grey ===
+.conf  38;2;146;151;187
+.cfg   38;2;146;151;187
+.ini   38;2;146;151;187
+.lock  38;2;120;120;140

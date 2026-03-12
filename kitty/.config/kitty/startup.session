@@ -1,0 +1,2 @@
+# Launch the default shell (fastfetch logo runs via .bashrc)
+launch --hold sh -c 'exec $SHELL'

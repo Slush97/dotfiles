@@ -1,0 +1,89 @@
+[global]
+    ### Display ###
+    monitor = 0
+    follow = mouse
+
+    ### Dimensions ###
+    width = (320, 440)
+    height = (0, 300)
+    origin = top-right
+    offset = (18, 54)
+
+    scale = 0
+    notification_limit = 5
+
+    ### Progress bar ###
+    progress_bar = true
+    progress_bar_height = 8
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 300
+    progress_bar_corner_radius = 4
+
+    ### Appearance ###
+    separator_height = 1
+    padding = 16
+    horizontal_padding = 16
+    text_icon_padding = 14
+
+    frame_width = 3
+    frame_color = "#a8a8b8"
+    gap_size = 10
+    separator_color = "#4a4a55"
+    corner_radius = 10
+
+    transparency = 8
+
+    ### Text ###
+    font = JetBrainsMono Nerd Font 12
+    line_height = 0
+    markup = full
+    format = "<b>%s</b>  <span alpha='60%'>✕</span>\n%b"
+
+    alignment = left
+    vertical_alignment = center
+
+    show_age_threshold = 60
+    ellipsize = middle
+    ignore_newline = false
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+
+    ### Icons ###
+    enable_recursive_icon_lookup = true
+    icon_theme = Adwaita
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 64
+
+    ### History ###
+    sticky_history = yes
+    history_length = 20
+
+    ### Misc ###
+    sort = yes
+    idle_threshold = 120
+    layer = overlay
+    force_xwayland = false
+    mouse_left_click = close_current
+    mouse_middle_click = close_all
+    mouse_right_click = close_current
+
+[urgency_low]
+    background = "#2e2e35"
+    foreground = "#d4d4d8"
+    frame_color = "#4a4a55"
+    timeout = 5
+
+[urgency_normal]
+    background = "#2e2e35"
+    foreground = "#d4d4d8"
+    frame_color = "#a8a8b8"
+    timeout = 8
+
+[urgency_critical]
+    background = "#4a2623"
+    foreground = "#f2d8c7"
+    frame_color = "#c96b5e"
+    timeout = 0
