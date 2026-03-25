@@ -1,0 +1,50 @@
+#!/bin/bash
+# fan-watch — Live-updating fan/temp monitor (no profile changes)
+
+INTERVAL=${1:-2}
+
+BOLD='\033[1m'
+DIM='\033[2m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+RED='\033[31m'
+CYAN='\033[36m'
+RESET='\033[0m'
+
+color_temp() {
+    local t=$1
+    if (( t >= 85 )); then echo -e "${RED}${t}°C${RESET}"
+    elif (( t >= 65 )); then echo -e "${YELLOW}${t}°C${RESET}"
+    else echo -e "${GREEN}${t}°C${RESET}"; fi
+}
+
+cleanup() { echo -e "\n"; exit 0; }
+trap cleanup SIGINT SIGTERM
+
+echo -e "${BOLD}fan-watch${RESET} — refreshing every ${INTERVAL}s (Ctrl+C to stop)"
+echo ""
+
+while true; do
+    profile=$(asusctl profile get 2>/dev/null | grep -oP 'Active profile: \K.*')
+    fan_rpm=$(cat /sys/class/hwmon/hwmon5/fan1_input 2>/dev/null || echo "?")
+    pkg=$(( $(cat /sys/class/hwmon/hwmon7/temp1_input 2>/dev/null) / 1000 ))
+    nvme=$(( $(cat /sys/class/hwmon/hwmon4/temp1_input 2>/dev/null) / 1000 ))
+
+    # Collect core temps
+    cores=""
+    for f in /sys/class/hwmon/hwmon7/temp*_input; do
+        label=$(cat "${f/_input/_label}" 2>/dev/null)
+        if [[ "$label" == Core* ]]; then
+            t=$(( $(cat "$f") / 1000 ))
+            cores+="$(color_temp $t) "
+        fi
+    done
+
+    printf "\r\033[K${DIM}%s${RESET}  " "$(date +%H:%M:%S)"
+    printf "Fan: ${CYAN}%s${RESET} rpm  " "$fan_rpm"
+    printf "CPU: $(color_temp $pkg)  "
+    printf "NVMe: $(color_temp $nvme)  "
+    printf "[${BOLD}%s${RESET}]" "$profile"
+
+    sleep "$INTERVAL"
+done

@@ -21,7 +21,7 @@ Personal configuration files for an Arch Linux + Hyprland setup, managed with [G
 | **sddm** | Custom SDDM login theme (brutalist glass panel, QML) |
 | **git** | Git config and global ignore |
 | **npm** | npm config (global prefix) |
-| **scripts** | Utility scripts (`android-cleanup.sh` for post-reboot debloat via ADB) |
+| **scripts** | Utility scripts — Android debloat via ADB, asusctl fan control (`fan-status`, `fan-set`, `fan-auto`, `fan-watch`) |
 
 ## Theme system
 

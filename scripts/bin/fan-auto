@@ -1,0 +1,111 @@
+#!/bin/bash
+# fan-auto — Automatically switch profiles based on CPU temperature
+#
+# Runs in a loop, checking temps every INTERVAL seconds.
+# Switches between Quiet/Balanced/Performance based on thresholds.
+# Kill with Ctrl+C or send SIGTERM.
+
+# Thresholds (°C) — adjust to taste
+THRESH_PERF=80      # above this → Performance
+THRESH_BALANCED=65   # above this → Balanced
+# below THRESH_BALANCED → Quiet
+
+INTERVAL=${1:-5}     # check interval in seconds (default: 5)
+HYSTERESIS=3         # degrees of hysteresis to prevent flapping
+
+BOLD='\033[1m'
+DIM='\033[2m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+RED='\033[31m'
+CYAN='\033[36m'
+RESET='\033[0m'
+
+last_profile=""
+
+get_cpu_temp() {
+    local temp
+    temp=$(cat /sys/class/hwmon/hwmon7/temp1_input 2>/dev/null)
+    echo $(( temp / 1000 ))
+}
+
+get_profile() {
+    asusctl profile get 2>/dev/null | grep -oP 'Active profile: \K.*'
+}
+
+set_profile() {
+    local target=$1
+    local current
+    current=$(get_profile)
+    if [[ "$current" != "$target" ]]; then
+        asusctl profile set "$target" 2>/dev/null
+        echo -e "$(date +%H:%M:%S) ${BOLD}→ ${target}${RESET}"
+    fi
+}
+
+target_for_temp() {
+    local temp=$1
+    local current=$2
+
+    # Apply hysteresis: require crossing threshold by HYSTERESIS degrees
+    # to switch DOWN, but switch UP immediately
+    case "$current" in
+        Performance)
+            if (( temp < THRESH_PERF - HYSTERESIS )); then
+                if (( temp < THRESH_BALANCED - HYSTERESIS )); then
+                    echo "Quiet"
+                else
+                    echo "Balanced"
+                fi
+            else
+                echo "Performance"
+            fi
+            ;;
+        Balanced)
+            if (( temp >= THRESH_PERF )); then
+                echo "Performance"
+            elif (( temp < THRESH_BALANCED - HYSTERESIS )); then
+                echo "Quiet"
+            else
+                echo "Balanced"
+            fi
+            ;;
+        Quiet|*)
+            if (( temp >= THRESH_PERF )); then
+                echo "Performance"
+            elif (( temp >= THRESH_BALANCED )); then
+                echo "Balanced"
+            else
+                echo "Quiet"
+            fi
+            ;;
+    esac
+}
+
+cleanup() {
+    echo -e "\n${DIM}fan-auto stopped${RESET}"
+    exit 0
+}
+trap cleanup SIGINT SIGTERM
+
+echo -e "${BOLD}fan-auto${RESET} — checking every ${INTERVAL}s"
+echo -e "${DIM}Thresholds: <${THRESH_BALANCED}°C→Quiet  <${THRESH_PERF}°C→Balanced  ≥${THRESH_PERF}°C→Performance  (hysteresis: ${HYSTERESIS}°C)${RESET}"
+echo ""
+
+while true; do
+    temp=$(get_cpu_temp)
+    current=$(get_profile)
+    fan_rpm=$(cat /sys/class/hwmon/hwmon5/fan1_input 2>/dev/null || echo "?")
+    target=$(target_for_temp "$temp" "$current")
+
+    # Color the temp
+    if (( temp >= THRESH_PERF )); then tc="$RED"
+    elif (( temp >= THRESH_BALANCED )); then tc="$YELLOW"
+    else tc="$GREEN"; fi
+
+    printf "\r${DIM}%s${RESET}  ${tc}%d°C${RESET}  ${CYAN}%s rpm${RESET}  [%s]  " \
+        "$(date +%H:%M:%S)" "$temp" "$fan_rpm" "$current"
+
+    set_profile "$target"
+    sleep "$INTERVAL"
+done

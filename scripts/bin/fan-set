@@ -1,0 +1,38 @@
+#!/bin/bash
+# fan-set — Set asusctl fan profile (quiet/balanced/performance)
+
+usage() {
+    echo "Usage: fan-set <quiet|balanced|performance>"
+    echo "       fan-set next    — cycle to next profile"
+    echo ""
+    echo "Profiles:"
+    echo "  quiet        Low fan speed, reduced performance"
+    echo "  balanced     Default behavior"
+    echo "  performance  Max fan speed, full performance"
+    exit 1
+}
+
+[[ $# -eq 0 ]] && usage
+
+case "${1,,}" in
+    q|quiet)
+        asusctl profile set Quiet
+        ;;
+    b|balanced)
+        asusctl profile set Balanced
+        ;;
+    p|perf|performance)
+        asusctl profile set Performance
+        ;;
+    n|next)
+        asusctl profile next
+        ;;
+    *)
+        echo "Unknown profile: $1"
+        usage
+        ;;
+esac
+
+# Show result
+profile=$(asusctl profile get 2>/dev/null | grep -oP 'Active profile: \K.*')
+echo "Profile set to: $profile"

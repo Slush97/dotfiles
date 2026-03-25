@@ -1,0 +1,86 @@
+#!/bin/bash
+# fan-status — Show current fan speed, temps, and asusctl profile
+
+BOLD='\033[1m'
+DIM='\033[2m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+RED='\033[31m'
+CYAN='\033[36m'
+RESET='\033[0m'
+
+# Current profile
+profile=$(asusctl profile get 2>/dev/null | grep -oP 'Active profile: \K.*')
+
+case "$profile" in
+    Quiet)       pcolor="$GREEN" ;;
+    Balanced)    pcolor="$YELLOW" ;;
+    Performance) pcolor="$RED" ;;
+    *)           pcolor="$RESET" ;;
+esac
+
+# Fan RPM
+fan_rpm=$(cat /sys/class/hwmon/hwmon5/fan1_input 2>/dev/null || echo "N/A")
+
+# CPU temps
+pkg_temp=$(cat /sys/class/hwmon/hwmon7/temp1_input 2>/dev/null)
+if [[ -n "$pkg_temp" ]]; then
+    pkg_temp=$((pkg_temp / 1000))
+else
+    pkg_temp="N/A"
+fi
+
+# Per-core temps
+core_temps=()
+for f in /sys/class/hwmon/hwmon7/temp*_input; do
+    label_f="${f/_input/_label}"
+    label=$(cat "$label_f" 2>/dev/null)
+    if [[ "$label" == Core* ]]; then
+        t=$(( $(cat "$f") / 1000 ))
+        core_temps+=("$t")
+    fi
+done
+
+# NVMe temp
+nvme_temp=$(cat /sys/class/hwmon/hwmon4/temp1_input 2>/dev/null)
+if [[ -n "$nvme_temp" ]]; then
+    nvme_temp=$((nvme_temp / 1000))
+else
+    nvme_temp="N/A"
+fi
+
+# Color temp values
+color_temp() {
+    local t=$1
+    if [[ "$t" == "N/A" ]]; then echo -e "${DIM}N/A${RESET}"; return; fi
+    if (( t >= 85 )); then echo -e "${RED}${t}°C${RESET}"
+    elif (( t >= 65 )); then echo -e "${YELLOW}${t}°C${RESET}"
+    else echo -e "${GREEN}${t}°C${RESET}"; fi
+}
+
+echo -e "${BOLD}Fan Status${RESET}"
+echo -e "  Profile:  ${pcolor}${profile}${RESET}"
+echo -e "  Fan RPM:  ${CYAN}${fan_rpm}${RESET}"
+echo ""
+echo -e "${BOLD}Temperatures${RESET}"
+echo -e "  CPU Package:  $(color_temp "$pkg_temp")"
+
+if (( ${#core_temps[@]} > 0 )); then
+    cores_str=""
+    for t in "${core_temps[@]}"; do
+        cores_str+="$(color_temp "$t") "
+    done
+    echo -e "  CPU Cores:    ${cores_str}"
+fi
+
+echo -e "  NVMe:         $(color_temp "$nvme_temp")"
+
+# AC/Battery profile defaults
+ac_line=$(asusctl profile get 2>/dev/null | grep "AC profile")
+bat_line=$(asusctl profile get 2>/dev/null | grep "Battery profile")
+if [[ -n "$ac_line" || -n "$bat_line" ]]; then
+    echo ""
+    echo -e "${BOLD}Profile Defaults${RESET}"
+    [[ -n "$ac_line" ]]  && echo -e "  ${DIM}${ac_line}${RESET}"
+    [[ -n "$bat_line" ]] && echo -e "  ${DIM}${bat_line}${RESET}"
+fi
