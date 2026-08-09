@@ -8,7 +8,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$DOTFILES_DIR"
 
-PACKAGES=(shell git hypr kitty waybar dunst fastfetch starship nvim btop htop ranger sddm scry npm scripts)
+PACKAGES=(shell zsh git hypr kitty waybar dunst fastfetch starship nvim btop htop ranger sddm scry npm scripts)
 
 if [ $# -gt 0 ]; then
   PACKAGES=("$@")
