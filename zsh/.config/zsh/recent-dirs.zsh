@@ -3,12 +3,12 @@
 #
 # Behaviour
 #   • Every directory change is recorded (via zsh's chpwd hook).
-#   • A one-line, coloured strip of recent directory names sits directly above
-#     the prompt, so it is there the moment a terminal opens.
-#   • On an EMPTY prompt: press Tab to cycle a highlight through that same
-#     strip — Tab / Right forward, Shift-Tab / Left back, typing filters,
-#     Enter cds there, Esc cancels. Nothing is drawn below the prompt; the
-#     strip you are already looking at is the thing that moves.
+#   • On an EMPTY prompt: press Tab to open a one-line, coloured strip of
+#     recent directory names directly above the prompt and cycle a highlight
+#     through it — Tab / Right forward, Shift-Tab / Left back, typing filters,
+#     Enter cds there, Esc cancels. The strip appears only while you are
+#     picking and vanishes again afterwards, so it never accumulates in the
+#     scrollback.
 #   • On a NON-empty prompt: Tab behaves as normal completion.
 #   • `rd` opens the same picker as a standalone command.
 #
@@ -229,7 +229,9 @@ _rd_paint() {
 # Rebuild PS1 as "<strip>\n<the prompt starship built>". Called from precmd and
 # again on every keystroke while the picker is open.
 _rd_apply_ps1() {
-  if (( $#_rd_view == 0 && _rd_active == 0 )); then
+  # Only while the picker is actually open. Keeping the strip in PS1 the rest
+  # of the time meant every prompt left another copy of it in the scrollback.
+  if (( _rd_active == 0 || $#_rd_view == 0 )); then
     PS1=$_rd_base_ps1
     return
   fi
